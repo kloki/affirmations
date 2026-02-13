@@ -1,4 +1,4 @@
-use affirmations::{LONGDAY, NEUTRAL, NVIM, SENIOR, SWAYWM, VETERAN};
+use affirmations::{LONGDAY, NEUTRAL, NVIM, SENIOR, SWAYWM, VETERAN, VSCODE};
 use colorize::AnsiColor;
 use rand::random_range;
 use sysinfo::System;
@@ -6,6 +6,7 @@ mod affirmations;
 
 struct Report {
     pub is_using_vim: bool,
+    pub is_using_vscode: bool,
     pub is_using_sway: bool,
     pub is_working_long_time: bool,
 }
@@ -13,15 +14,20 @@ struct Report {
 impl Report {
     fn new() -> Report {
         let mut is_using_vim = false;
+        let mut is_using_vscode = false;
         let mut is_using_sway = false;
 
         let mut sys = System::new_all();
         sys.refresh_all();
         for (_, process) in sys.processes() {
-            if process.name().to_string_lossy().contains("vim") {
+            let name = process.name().to_string_lossy();
+            if name.contains("vim") {
                 is_using_vim = true;
             }
-            if process.name().to_string_lossy().contains("sway") {
+            if name.contains("code") || name.contains("Code") {
+                is_using_vscode = true;
+            }
+            if name.contains("sway") {
                 is_using_sway = true;
             }
         }
@@ -30,6 +36,7 @@ impl Report {
 
         Report {
             is_using_vim,
+            is_using_vscode,
             is_using_sway,
             is_working_long_time,
         }
@@ -43,6 +50,9 @@ fn get_affermation(report: Report) -> String {
             LONGDAY[rand::random_range(0..LONGDAY.len())].red()
         }
         x if x < 200 && report.is_using_vim => NVIM[rand::random_range(0..NVIM.len())].blue(),
+        x if x < 200 && report.is_using_vscode => {
+            VSCODE[rand::random_range(0..VSCODE.len())].blue()
+        }
         x if x > 200 && x < 400 && report.is_using_sway => {
             SWAYWM[rand::random_range(0..SWAYWM.len())].blue()
         }

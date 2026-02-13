@@ -3,8 +3,9 @@
 Add postivity to your terminal
 
 # Install
+
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/kloki/affirmations/releases/download/v0.1.0/affirmations-installer.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/kloki/affirmations/releases/download/v0.1.1/affirmations-installer.sh | sh
 ```
 
 ## Bash
